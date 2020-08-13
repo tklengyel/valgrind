@@ -589,6 +589,7 @@ PRE(sysctl) {
    case 0x00000010:
    case 0x00000011:
    case 0x00000012:
+   case 0x00000013:
 	   break;
    default:
       bad_intf_version(tid, layout, arrghs, status, flags,
@@ -642,6 +643,7 @@ PRE(sysctl) {
       case 0x00000010:
       case 0x00000011:
       case 0x00000012:
+      case 0x00000013:
      PRE_XEN_SYSCTL_READ(getdomaininfolist_00000010, first_domain);
      PRE_XEN_SYSCTL_READ(getdomaininfolist_00000010, max_domains);
      PRE_XEN_SYSCTL_READ(getdomaininfolist_00000010, buffer);
