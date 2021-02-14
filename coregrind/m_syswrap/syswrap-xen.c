@@ -243,6 +243,15 @@ PRE(memory_op)
                     (Addr)&arg->gfn, sizeof(arg->gfn));
        break;
    }
+   case VKI_XENMEM_sharing_op: {
+       struct vki_xen_mem_event_op *arg =
+            (struct vki_xen_mem_event_op *)ARG2;
+       PRE_MEM_READ("XENMEM_sharing_op domid",
+                    (Addr)&arg->domain, sizeof(arg->domain));
+       PRE_MEM_READ("XENMEM_sharing_op op",
+                    (Addr)&arg->op, sizeof(arg->op));
+       break;
+   }
    default:
       bad_subop(tid, layout, arrghs, status, flags,
                 "__HYPERVISOR_memory_op", ARG1);
@@ -753,6 +762,7 @@ PRE(domctl)
    case 0x00000010:
    case 0x00000011:
    case 0x00000012:
+   case 0x00000013:
 	   break;
    default:
       bad_intf_version(tid, layout, arrghs, status, flags,
@@ -852,6 +862,7 @@ PRE(domctl)
       case 0x00000010:
       case 0x00000011:
       case 0x00000012:
+      case 0x00000013:
          __PRE_XEN_DOMCTL_READ(test_assign_device, assign_device_0000000b, dev);
          __PRE_XEN_DOMCTL_READ(test_assign_device, assign_device_0000000b, flag);
          switch (domctl->u.assign_device_0000000b.dev) {
@@ -889,6 +900,7 @@ PRE(domctl)
       case 0x00000010:
       case 0x00000011:
       case 0x00000012:
+      case 0x00000013:
          __PRE_XEN_DOMCTL_READ(assign_device, assign_device_0000000b, dev);
          __PRE_XEN_DOMCTL_READ(assign_device, assign_device_0000000b, flag);
          switch (domctl->u.assign_device_0000000b.dev) {
@@ -926,6 +938,7 @@ PRE(domctl)
       case 0x00000010:
       case 0x00000011:
       case 0x00000012:
+      case 0x00000013:
          __PRE_XEN_DOMCTL_READ(deassign_device, assign_device_0000000b, dev);
          __PRE_XEN_DOMCTL_READ(deassign_device, assign_device_0000000b, flag);
          switch (domctl->u.assign_device_0000000b.dev) {
@@ -967,6 +980,7 @@ PRE(domctl)
       case 0x00000010:
       case 0x00000011:
       case 0x00000012:
+      case 0x00000013:
          __PRE_XEN_DOMCTL_READ(settscinfo, tsc_info_0000000b, tsc_mode);
          __PRE_XEN_DOMCTL_READ(settscinfo, tsc_info_0000000b, gtsc_khz);
          __PRE_XEN_DOMCTL_READ(settscinfo, tsc_info_0000000b, incarnation);
@@ -1050,6 +1064,7 @@ PRE(domctl)
       case 0x00000010:
       case 0x00000011:
       case 0x00000012:
+      case 0x00000013:
          __PRE_XEN_DOMCTL_READ(getvcpuaffinity, vcpuaffinity_0000000a, vcpu);
          if (domctl->u.vcpuaffinity_0000000a.flags & VKI_XEN_VCPUAFFINITY_HARD)
             __PRE_XEN_DOMCTL_READ(
@@ -1081,6 +1096,7 @@ PRE(domctl)
       case 0x00000010:
       case 0x00000011:
       case 0x00000012:
+      case 0x00000013:
          __PRE_XEN_DOMCTL_READ(setvcpuaffinity, vcpuaffinity_0000000a, vcpu);
          __PRE_XEN_DOMCTL_READ(setvcpuaffinity, vcpuaffinity_0000000a, flags);
          if (domctl->u.vcpuaffinity_0000000a.flags & VKI_XEN_VCPUAFFINITY_HARD) {
@@ -1146,6 +1162,7 @@ PRE(domctl)
       case 0x00000010:
       case 0x00000011:
       case 0x00000012:
+      case 0x00000013:
          __PRE_XEN_DOMCTL_READ(get_ext_vcpucontext, ext_vcpucontext_00000009, vcpu);
          break;
 
@@ -1195,6 +1212,7 @@ PRE(domctl)
        case 0x00000010:
        case 0x00000011:
        case 0x00000012:
+       case 0x00000013:
            __PRE_XEN_DOMCTL_READ(set_ext_vcpucontext, ext_vcpucontext_00000009, vcpu);
            __PRE_XEN_DOMCTL_READ(set_ext_vcpucontext, ext_vcpucontext_00000009, size);
 #if defined(__i386__) || defined(__x86_64__)
@@ -1343,9 +1361,9 @@ PRE(domctl)
          __PRE_XEN_DOMCTL_READ(vm_event_op, vm_event_op_0000000b, mode);
          break;
       case 0x00000012:
+      case 0x00000013:
          __PRE_XEN_DOMCTL_READ(vm_event_op, vm_event_op_00000012, op);
          __PRE_XEN_DOMCTL_READ(vm_event_op, vm_event_op_00000012, mode);
-         __PRE_XEN_DOMCTL_READ(vm_event_op, vm_event_op_00000012, u.enable);
          break;
       }
       break;
@@ -1399,6 +1417,7 @@ PRE(domctl)
          break;
       case 0x0000011:
       case 0x0000012:
+      case 0x0000013:
           if (domctl->u.monitor_op_00000011.op == VKI_XEN_DOMCTL_MONITOR_OP_ENABLE ||
               domctl->u.monitor_op_00000011.op == VKI_XEN_DOMCTL_MONITOR_OP_DISABLE) {
              switch (domctl->u.monitor_op_00000011.event) {
@@ -1832,6 +1851,7 @@ POST(sysctl)
    case 0x00000010:
    case 0x00000011:
    case 0x00000012:
+   case 0x00000013:
 	   break;
    default:
       return;
@@ -1878,6 +1898,7 @@ POST(sysctl)
       case 0x00000010:
       case 0x00000011:
       case 0x00000012:
+      case 0x00000013:
 	 POST_XEN_SYSCTL_WRITE(getdomaininfolist_00000010, num_domains);
 	 POST_MEM_WRITE((Addr)sysctl->u.getdomaininfolist_00000010.buffer.p,
 			sizeof(*sysctl->u.getdomaininfolist_00000010.buffer.p)
@@ -1944,6 +1965,7 @@ POST(sysctl)
       case 0x00000010:
       case 0x00000011:
       case 0x00000012:
+      case 0x00000013:
          POST_XEN_SYSCTL_WRITE(physinfo_00000010, threads_per_core);
          POST_XEN_SYSCTL_WRITE(physinfo_00000010, cores_per_socket);
          POST_XEN_SYSCTL_WRITE(physinfo_00000010, nr_cpus);
@@ -2008,6 +2030,7 @@ POST(domctl){
    case 0x00000010:
    case 0x00000011:
    case 0x00000012:
+   case 0x00000013:
 	   break;
    default:
 	   return;
@@ -2076,6 +2099,7 @@ POST(domctl){
       case 0x00000010:
       case 0x00000011:
       case 0x00000012:
+      case 0x00000013:
          __POST_XEN_DOMCTL_WRITE(gettscinfo, tsc_info_0000000b, tsc_mode);
          __POST_XEN_DOMCTL_WRITE(gettscinfo, tsc_info_0000000b, gtsc_khz);
          __POST_XEN_DOMCTL_WRITE(gettscinfo, tsc_info_0000000b, incarnation);
@@ -2158,6 +2182,7 @@ POST(domctl){
       case 0x00000010:
       case 0x00000011:
       case 0x00000012:
+      case 0x00000013:
          if (domctl->u.vcpuaffinity_0000000a.flags & VKI_XEN_VCPUAFFINITY_HARD)
             POST_MEM_WRITE(
                (Addr)domctl->u.vcpuaffinity_0000000a.cpumap_hard.bitmap.p,
@@ -2215,6 +2240,7 @@ POST(domctl){
       case 0x00000010:
       case 0x00000011:
       case 0x00000012:
+      case 0x00000013:
 	 POST_XEN_DOMCTL_WRITE(getdomaininfo_00000009, domain);
 	 POST_XEN_DOMCTL_WRITE(getdomaininfo_00000009, flags);
 	 POST_XEN_DOMCTL_WRITE(getdomaininfo_00000009, tot_pages);
@@ -2352,6 +2378,7 @@ POST(domctl){
          __POST_XEN_DOMCTL_WRITE(vm_event_op, vm_event_op_0000000b, port);
          break;
       case 0x00000012:
+      case 0x00000013:
          __POST_XEN_DOMCTL_WRITE(vm_event_op, vm_event_op_00000012, u.enable.port);
          break;
       }
