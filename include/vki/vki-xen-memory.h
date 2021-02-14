@@ -46,6 +46,7 @@
 #define VKI_XENMEM_get_sharing_freed_pages    18
 #define VKI_XENMEM_get_sharing_shared_pages   19
 #define VKI_XENMEM_access_op                  21
+#define VKI_XENMEM_sharing_op                 22
 #define VKI_XENMEM_claim_pages                24
 #define VKI_XENMEM_machphys_compat_mfn_list   25
 
