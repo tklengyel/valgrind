@@ -259,6 +259,11 @@ PRE(memory_op)
    }
 }
 
+PRE(multicall)
+{
+   PRINT("__HYPERVISOR_multicall ( %lu, %#lx )", ARG1, ARG2);
+}
+
 PRE(mmuext_op)
 {
    PRINT("__HYPERVISOR_mmuext_op ( %#lx, %ld, %#lx, %lu )",
@@ -1693,6 +1698,10 @@ POST(memory_op)
    }
 }
 
+POST(multicall)
+{
+}
+
 POST(mmuext_op)
 {
    unsigned int *pdone = (unsigned int *)ARG3;
@@ -2508,7 +2517,7 @@ static XenHypercallTableEntry hypercall_table[] = {
    //    __VKI_XEN_update_descriptor                               // 10
    //                                                                 // 11
    HYPXY(__VKI_XEN_memory_op,               memory_op,         2), // 12
-   //    __VKI_XEN_multicall                                       // 13
+   HYPXY(__VKI_XEN_multicall,               multicall,         2), // 13
    //    __VKI_XEN_update_va_mapping                               // 14
 
    //    __VKI_XEN_set_timer_op                                    // 15
