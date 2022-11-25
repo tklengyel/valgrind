@@ -661,6 +661,7 @@ struct vki_xen_domctl {
     vki_uint32_t cmd;
     vki_uint32_t interface_version; /* XEN_DOMCTL_INTERFACE_VERSION */
     vki_xen_domid_t  domain;
+    vki_uint16_t _pad[3];
     union {
         struct vki_xen_domctl_createdomain      createdomain;
         struct vki_xen_domctl_getdomaininfo_00000007 getdomaininfo_00000007;

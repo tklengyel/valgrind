@@ -36,6 +36,7 @@
 #define VKI_XENVER_pagesize 7
 #define VKI_XENVER_guest_handle 8
 #define VKI_XENVER_commandline 9
+#define VKI_XENVER_build_id 10
 
 typedef char vki_xen_extraversion_t[16];
 
@@ -60,6 +61,13 @@ struct vki_xen_feature_info {
 };
 
 typedef char vki_xen_commandline_t[1024];
+
+struct vki_xen_build_id {
+        vki_uint32_t        len; /* IN: size of buf[]. */
+        unsigned char   buf[];
+                             /* OUT: Variable length buffer with build_id. */
+};
+typedef struct vki_xen_build_id vki_xen_build_id_t;
 
 #endif // __VKI_XEN_VERSION_H
 

@@ -544,6 +544,7 @@ PRE(xen_version)
    case VKI_XENVER_pagesize:
    case VKI_XENVER_guest_handle:
    case VKI_XENVER_commandline:
+   case VKI_XENVER_build_id:
       /* No inputs */
       break;
 
@@ -605,6 +606,7 @@ PRE(sysctl) {
    case 0x00000012:
    case 0x00000013:
    case 0x00000014:
+   case 0x00000015:
 	   break;
    default:
       bad_intf_version(tid, layout, arrghs, status, flags,
@@ -660,6 +662,7 @@ PRE(sysctl) {
       case 0x00000012:
       case 0x00000013:
       case 0x00000014:
+      case 0x00000015:
      PRE_XEN_SYSCTL_READ(getdomaininfolist_00000010, first_domain);
      PRE_XEN_SYSCTL_READ(getdomaininfolist_00000010, max_domains);
      PRE_XEN_SYSCTL_READ(getdomaininfolist_00000010, buffer);
@@ -771,6 +774,7 @@ PRE(domctl)
    case 0x00000012:
    case 0x00000013:
    case 0x00000014:
+   case 0x00000015:
 	   break;
    default:
       bad_intf_version(tid, layout, arrghs, status, flags,
@@ -1826,6 +1830,9 @@ POST(xen_version)
       break;
    case VKI_XENVER_commandline:
       POST_MEM_WRITE((Addr)ARG2, sizeof(vki_xen_commandline_t));
+      break;
+   case VKI_XENVER_build_id:
+      POST_MEM_WRITE((Addr)ARG2, sizeof(vki_xen_build_id_t));
       break;
    }
 }
