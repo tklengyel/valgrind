@@ -775,6 +775,7 @@ PRE(domctl)
    case 0x00000013:
    case 0x00000014:
    case 0x00000015:
+   case 0x00000016:
 	   break;
    default:
       bad_intf_version(tid, layout, arrghs, status, flags,
